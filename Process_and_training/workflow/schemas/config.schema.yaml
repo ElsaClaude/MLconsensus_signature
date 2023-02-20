@@ -1,0 +1,34 @@
+$schema: "http://json-schema.org/draft-04/schema#"
+
+description: snakemake configuration file
+
+type: object
+
+# possible entries of the config file and which type they should be
+properties:
+  prefix:
+    type: array
+  input_path:
+    type: string
+  output_path:
+    type: string
+  run_name:
+    type: string
+  classifiers:
+    type: array
+  classifiers_weka_name:
+    type : object
+  classif_options:
+    type : string
+  genome_ref_dir:
+    type : string
+# entries that have to be in the config file for successful validation
+required:
+  - prefix
+  - input_path
+  - output_path
+  - run_name
+  - classifiers
+  - classifiers_weka_name
+  - classif_options
+  - genome_ref_dir

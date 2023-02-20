@@ -1,0 +1,4 @@
+WorkflowError in line 6 of /home/eclaude/Documents/These/snakemake_BDML_to_analysis/workflow/rules/common.smk:
+Workflow defines configfile ../config/config.yaml but it is not present or accessible.
+  File "/home/eclaude/Documents/These/snakemake_BDML_to_analysis/workflow/Snakefile", line 6, in <module>
+  File "/home/eclaude/Documents/These/snakemake_BDML_to_analysis/workflow/rules/common.smk", line 6, in <module>

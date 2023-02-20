@@ -1,0 +1,19 @@
+# Main entrypoint of the workflow. 
+# Please follow the best practices: 
+# https://snakemake.readthedocs.io/en/stable/snakefiles/best_practices.html,
+# in particular regarding the standardized folder structure mentioned there. 
+
+include: "rules/common.smk"
+include: "rules/standardize_results.smk"
+include: "rules/redundancy_calculation.smk"
+include: "rules/models_features_relationships_neo4j.smk"
+include: "rules/correlated_features_relationships.smk"
+include: "rules/correlated_features.smk"
+include: "rules/stats.smk"
+
+workdir: "scripts/"
+
+rule all:
+    input:
+        expand('{outputpath}finished.txt', outputpath = config['output_path'])
+        # expand('../../results/TPM/{id}/{id}_Aligned.out.sorted_transcripts.out',id = config['Samplesid'])

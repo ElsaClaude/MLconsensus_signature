@@ -1,0 +1,52 @@
+prefix:
+  - S1
+  - S2
+  - S3
+  - S4
+  - S5
+  - S6
+  - S7
+  - S8
+  - S9
+  - S10
+run_name : COAD_READ_Transcript_healthy_vs_stageIV
+classifiers :
+  - BAYES_A1DE
+  - BAYES_BN
+  - BAYES_NB
+  - TREES_C45
+  - TREES_RF
+  - TREES_CART
+  - LAZY_kNN
+  - FUNCTIONS_SVM
+classifiers_weka_name :
+  BAYES_A1DE:
+    - weka : bayes.AveragedNDependenceEstimators.A1DE
+    - change : A1DE
+  BAYES_BN:
+    - weka : bayes.BayesNet
+    - change : Bayes Network
+  BAYES_NB:
+    - weka : bayes.NaiveBayes
+    - change : Naive Bayes
+  TREES_C45:
+    - weka : trees.J48
+    - change : C4.5
+  TREES_RF:
+    - weka : trees.RandomForest
+    - change : Random Forest
+  TREES_CART:
+    - weka : trees.SimpleCart
+    - change : Simple Cart
+  LAZY_kNN:
+    - weka : lazy.IBk
+    - change : kNN
+  FUNCTIONS_SVM:
+    - weka : functions.SMO
+    - change : SVM
+classif_options : /home/eclaude/Documents/These/Runs_BDML/Parameters_config_DB/nb_params_by_method.csv
+genome_ref_dir : /home/eclaude/Documents/These/REF_datasets/
+avg_mcc_threshold : 0.7
+std_mcc : 0.1
+input_path: /home/eclaude/Documents/These/Runs_BDML/paper_NAR_GaB/CRC_TCGA_vst_DEG_filtered/strat_sampling/
+output_path: /home/eclaude/Documents/These/evaluate_models/paper_NAR_GaB/CRC_TCGA_vst_DEG_filtered_TEST2/strat_sampling/
