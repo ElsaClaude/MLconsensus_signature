@@ -1,7 +1,8 @@
 rule stratified_sampling:
     params:
         output_directory = config['output_directory'],
-        name = config['name']
+        name = config['name'],
+        nb_samplings = config['nb_samplings']
     input:
         expand('{input_data}/{metadata_file}', input_data = config['input_data'], metadata_file = config['metadata_file']),
         expand('{input_data}/{data_file}', input_data = config['input_data'], data_file = config['data_file'])

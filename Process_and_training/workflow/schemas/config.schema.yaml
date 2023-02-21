@@ -20,12 +20,19 @@ properties:
     type: string
   # classifiers:
   #   type: array
+  nb_samplings: 
+    type: integer
   # classifiers_weka_name:
   #   type : object
   # classif_options:
   #   type : string
   # genome_ref_dir:
   #   type : string
+  cpus:
+    type: integer
+  memory:
+    type: string
+
 # entries that have to be in the config file for successful validation
 required:
   # - prefix
@@ -34,7 +41,9 @@ required:
   - data_file
   - output_directory
   - name
-  # - run_name
+  - nb_samplings
+  - cpus
+  - memory
   # - classifiers
   # - classifiers_weka_name
   # - classif_options

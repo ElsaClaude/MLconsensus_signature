@@ -8,16 +8,18 @@ def get_delimiter(file_path, bytes = 4096):
     delimiter = sniffer.sniff(data).delimiter
     return delimiter
 
-def stratified_sampling(metadatapath,datapath,outputdir, name):
+def stratified_sampling(metadatapath,datapath,samplings,outputdir, name):
     metadatadf = pd.read_csv(metadatapath,sep=get_delimiter(metadatapath),header=0)
     datadf = pd.read_csv(datapath,sep=get_delimiter(datapath),header=0)
 
     fulldata = metadatadf.merge(datadf, on='ID')
 
+    maxfeat=len(fulldata.columns)
+
     clusterslist = fulldata.pop('Cluster')
     truelabel = fulldata.pop('Label')
 
-    for i in range(1,11,1):
+    for i in range(1,samplings+1,1):
         print(i)
         clusters_train, clusters_test, labels_train, labels_test = train_test_split( fulldata, truelabel, test_size=1/3, stratify=clusterslist)
         clusters_train = clusters_train.join(labels_train)
@@ -26,20 +28,22 @@ def stratified_sampling(metadatapath,datapath,outputdir, name):
         clusters_train.to_csv(outputdir+'/Stratified_sampling/'+name+'_S'+str(i)+'x_train.csv',sep=',',header=True,index=False)
         clusters_test.to_csv(outputdir+'/Stratified_sampling/'+name+'_S'+str(i)+'x_test.csv',sep=',',header=True, index=False)
 
-    return
+    return maxfeat
 
 def main():
     metadatapath = snakemake.input[0]
     datapath = snakemake.input[1]
     outputdir = snakemake.params[0]
     name = snakemake.params[1]
+    samplings = snakemake.params[2]
 
     output = snakemake.output[0]
 
-    stratified_sampling(metadatapath, datapath, outputdir, name)
+    maxfeat = stratified_sampling(metadatapath, datapath, samplings,outputdir, name)
 
-    f = open(output, "a")
-    f.write("Stratified sampling done !")
+    f = open(output, "w")
+    f.write("Stratified sampling done !\n")
+    f.write("maxfeat="+str(maxfeat))
     f.close()
 
 if __name__ == "__main__":
