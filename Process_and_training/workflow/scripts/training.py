@@ -4,6 +4,7 @@ import os
 import shutil
 from pathlib import Path
 import stat
+import subprocess
 
 def absoluteFilePaths(directory):
     fullpath = []
@@ -17,7 +18,7 @@ def create_tree_file(samplings,scriptpath,classifiers,outputdir, name,cpus,maxfe
         samp = 'S'+str(samp)+'x'
         for classif in classifiers:
             classifname = '_'.join(classif.split('/')[-1].split('.')[0].split('_')[1:3])
-            runpath = outputdir+'/Training/'+samp+'/'+classifname+'/'
+            runpath = outputdir+'/Training'+name+'/'+samp+'/'+classifname+'/'
 
             Path(runpath).mkdir(parents=True, exist_ok=True)
 
@@ -28,8 +29,8 @@ def create_tree_file(samplings,scriptpath,classifiers,outputdir, name,cpus,maxfe
             config = open(runpath+'config.conf', "w")
             config.write('project='+name+'_'+samp+'_'+classifname+'\n')
             config.write('doClassification=true\nclassificationClassName=Label\nsampling=true\nseparator=,\nloocv=false\ncoptimizers=MCC\nsearchmodes=FB\ndebug=true\nwd=./\n')
-            config.write('trainFile='+outputdir+'/Stratified_sampling/'+name+'_'+samp+'_'+'train.csv\n')
-            config.write('validationFile='+outputdir+'/Stratified_sampling/'+name+'_'+samp+'_'+'test.csv\n')
+            config.write('trainFile=../../../Stratified_sampling/'+name+'_'+samp+'_'+'train.csv\n')
+            config.write('validationFile=../../../Stratified_sampling/'+name+'_'+samp+'_'+'test.csv\n')
             config.write('cpus='+str(cpus)+'\n')
             config.write('maxNumberOfSelectedFeatures='+maxfeat+'\n')
             config.close()
@@ -40,8 +41,8 @@ def create_tree_file(samplings,scriptpath,classifiers,outputdir, name,cpus,maxfe
             job.write('#SBATCH --job-name='+samp+'_'+classifname+'_'+name+'\n')
             job.write('#SBATCH --cpus-per-task='+str(cpus)+'\n')
             job.write('#SBATCH --mem='+memory+'\n')
-            job.write('#SBATCH --output='+outputdir+'/Training/'+samp+'/'+classifname+'training.out'+'\n')
-            job.write('#SBATCH --error='+outputdir+'/Training/'+samp+'/'+classifname+'training.err'+'\n')
+            job.write('#SBATCH --output='+outputdir+'/Training'+name+'/'+samp+'/'+classifname+'/training.out'+'\n')
+            job.write('#SBATCH --error='+outputdir+'/Training'+name+'/'+samp+'/'+classifname+'/training.err'+'\n')
 
             ### optional
             job.write('#SBATCH --account=rrg-adroit-ab\n')
@@ -59,7 +60,7 @@ def create_tree_file(samplings,scriptpath,classifiers,outputdir, name,cpus,maxfe
                 job.write('#SBATCH --time=14-00:00:00\n')
 
             ### training command
-            job.write('cd '+outputdir+'/Training/'+samp+'/'+classifname+';')
+            job.write('cd '+outputdir+'/Training/'+name+'/'+samp+'/'+classifname+';')
             job.write('module load java/1.8.0_192;')
             job.write('time java -Xmx'+memory+' -XX:+HeapDumpOnOutOfMemoryError -jar '+scriptpath+'/../../softs/BioDiscML/biodiscml_02_12_2022.jar -train -config config.conf')
 
@@ -68,6 +69,10 @@ def create_tree_file(samplings,scriptpath,classifiers,outputdir, name,cpus,maxfe
             ### allows execution of the job runner
             st = os.stat(runpath+'job_runner_'+name+'_'+samp+'_'+classifname+'.sh')
             os.chmod(runpath+'job_runner_'+name+'_'+samp+'_'+classifname+'.sh', st.st_mode | stat.S_IEXEC)
+
+            ### Launch training job for the associated run in loop
+            print('.'+runpath+'job_runner_'+name+'_'+samp+'_'+classifname+'.sh')
+            subprocess.call(['sbatch', runpath+'job_runner_'+name+'_'+samp+'_'+classifname+'.sh'])
     return
 
 def main():
