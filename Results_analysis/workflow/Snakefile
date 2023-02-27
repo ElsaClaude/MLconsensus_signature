@@ -16,4 +16,3 @@ workdir: "scripts/"
 rule all:
     input:
         expand('{outputpath}finished.txt', outputpath = config['output_path'])
-        # expand('../../results/TPM/{id}/{id}_Aligned.out.sorted_transcripts.out',id = config['Samplesid'])

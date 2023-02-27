@@ -375,5 +375,10 @@ def main():
 
     redundancy(input,inputpath,runs)
 
+    outputpath = snakemake.params[2]
+    # f = open(outputpath+"finished.txt", "a")
+    # f.write("Now the file has more content!")
+    # f.close()
+
 if __name__ == "__main__":
     main()

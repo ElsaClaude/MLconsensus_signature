@@ -22,7 +22,6 @@ rule correlated_features_relationships:
         inputpath = config['input_path'],
         prefix = config['prefix'],
         runname = config['run_name'],
-        # suffix=["METHODS", "METHODS_FILTERED_MCC07_STD01","MODELS","MODELS_FILTERED_MCC07_STD01","FEATURES","FEATURES_FILTERED_MCC07_STD01","RELATIONSHIPS","RELATIONSHIPS_FILTERED_MCC07_STD01"])
         suffix=["RELATIONSHIPS","RELATIONSHIPS_FILTERED_MCC"+str(config['avg_mcc_threshold']).replace('.','')+"_STD"+str(config['std_mcc']).replace('.','')])
 
     output:
@@ -30,7 +29,7 @@ rule correlated_features_relationships:
         inputpath = config['input_path'],
         prefix = config['prefix'],
         runname = config['run_name'],
-        # suffix=["METHODS", "METHODS_FILTERED_MCC07_STD01","MODELS","MODELS_FILTERED_MCC07_STD01","FEATURES","FEATURES_FILTERED_MCC07_STD01","RELATIONSHIPS","RELATIONSHIPS_FILTERED_MCC07_STD01"])
         suffix=["RELCORRFEAT","RELCORRFEAT_FILTERED_MCC"+str(config['avg_mcc_threshold']).replace('.','')+"_STD"+str(config['std_mcc']).replace('.','')])
+
     script:
         "../scripts/correlated_features_relationships.py"

@@ -18,10 +18,10 @@ properties:
     type: array
   classifiers_weka_name:
     type : object
-  classif_options:
-    type : string
-  genome_ref_dir:
-    type : string
+  # classif_options:
+  #   type : string
+  # genome_ref_dir:
+  #   type : string
 # entries that have to be in the config file for successful validation
 required:
   - prefix
@@ -30,5 +30,5 @@ required:
   - run_name
   - classifiers
   - classifiers_weka_name
-  - classif_options
-  - genome_ref_dir
+  # - classif_options
+  # - genome_ref_dir

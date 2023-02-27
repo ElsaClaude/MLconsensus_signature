@@ -13,20 +13,19 @@ rule stats:
         runname = config['run_name'],
         suffix=["RELCORRFEAT","RELCORRFEAT_FILTERED_MCC"+str(config['avg_mcc_threshold']).replace('.','')+"_STD"+str(config['std_mcc']).replace('.','')]),
 
-        infogainorder = expand('{inputpath}{prefix}/{runname}_{prefix}_{classifier}/{runname}_{prefix}_{classifier}_b.featureSelection.infoGain.csv',
+        infogainorder = expand('{inputpath}{prefix}/{classifier}/{runname}_{prefix}_{classifier}_b.featureSelection.infoGain.csv',
         inputpath = config['input_path'],
         prefix = config['prefix'],
         runname = config['run_name'],
         classifier = config['classifiers'][0]),
 
-        resultsstand = expand('{inputpath}{prefix}/{runname}_{prefix}_{classifiers}/{runname}_{prefix}_{classifiers}_c.classification.results.STANDARDIZED.csv',
+        resultsstand = expand('{inputpath}{prefix}/{classifiers}/{runname}_{prefix}_{classifiers}_c.classification.results.STANDARDIZED.csv',
         inputpath = config['input_path'],
         prefix = config['prefix'],
         runname = config['run_name'],
         classifiers = config['classifiers'])
 
     output:
-        expand('{outputpath}finished.txt',
-        outputpath = config['output_path'])
+        expand('{outputpath}finished.txt', outputpath = config['output_path'])
     script:
         "../scripts/stats.R"

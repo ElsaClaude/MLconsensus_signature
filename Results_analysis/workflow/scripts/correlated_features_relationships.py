@@ -4,7 +4,6 @@ from pandas.io.parsers import read_csv
 pd.options.mode.chained_assignment = None  # default='warn'
 import numpy as np
 from functools import reduce
-import argparse
 
 def create_relationships(NEO4JmfRelationShips,fullIG,pears ,spear,inputpath,runname,run,suffix):
     NEO4JmfRelationShips = pd.read_csv(NEO4JmfRelationShips,header=0)
@@ -65,16 +64,11 @@ def main():
     
     for run in prefix :
         NEO4JmfRelationShips = list(filter(lambda k: run in k.split('/'), runs_relationshipsmf))
-        print(NEO4JmfRelationShips)
         NEO4JmfRelationShips_notfilt = ''.join(list(filter(lambda k: "FILTERED" not in k, NEO4JmfRelationShips)))
-        print(NEO4JmfRelationShips_notfilt)
 
         NEO4JmfRelationShips_filt = ''.join(list(filter(lambda k: "FILTERED" in k, NEO4JmfRelationShips)))
-        print(NEO4JmfRelationShips_filt)
-
 
         fullIG = ''.join(list(filter(lambda k: run in k.split('/'), runs_fullig)))
-        print(fullIG)
 
         pears = ''.join(list(filter(lambda k: run in k.split('/'), runs_pearson)))
 

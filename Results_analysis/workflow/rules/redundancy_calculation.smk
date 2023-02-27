@@ -1,14 +1,15 @@
 rule redundancy_calculation:
     params:
         input_path = config['input_path'],
-        nbrun = config['prefix']
+        nbrun = config['prefix'],
+        output_path = config['output_path']
     input:
-        expand('{inputpath}{prefix}/{runname}_{prefix}_{classifier}/{runname}_{prefix}_{classifier}_a.classification.data_to_train.csv',
+        expand('{inputpath}{prefix}/{classifier}/{runname}_{prefix}_{classifier}_a.classification.data_to_train.csv',
         inputpath = config['input_path'],
         prefix = config['prefix'],
         runname = config['run_name'],
         classifier = config['classifiers'][0]),
-        expand('{inputpath}{prefix}/{runname}_{prefix}_{classifiers}/{runname}_{prefix}_{classifiers}_c.classification.results.STANDARDIZED.csv',
+        expand('{inputpath}{prefix}/{classifiers}/{runname}_{prefix}_{classifiers}_c.classification.results.STANDARDIZED.csv',
         inputpath = config['input_path'],
         prefix = config['prefix'],
         runname = config['run_name'],

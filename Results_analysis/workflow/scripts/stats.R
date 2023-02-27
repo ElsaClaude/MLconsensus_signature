@@ -246,6 +246,7 @@ format_redundant_feats <- function(redundantfeat,infogainshort){
 overlapmodels <- function(results,choicesamp,choicemethod,redundantfeat,infogainfeat){
   results <- subset(results, results$samp == choicesamp & results$classifier == choicemethod,select = c('ID','AttributeList'))
 
+  print(results)
   nbmodels <- length(results$ID)
   results <- separate_rows(results, AttributeList,sep=',', convert = FALSE)
 
@@ -259,10 +260,11 @@ overlapmodels <- function(results,choicesamp,choicemethod,redundantfeat,infogain
   results <- separate_rows(results, fullfeat,sep=',', convert = FALSE)
   results <- results[!duplicated(results), ]
   if(dim(results)[1] == 0) { return(results)}
+  results <- setattr(results, "class", c("data.table"))
+
   results <- dcast(results, ID ~ fullfeat, fun.aggregate = function(x) 1L, fill = 0L)
 
   results.forupset <- results
-  # ## make upsetplot ??
   results <- t(results)
   colnames(results) <- results[1,]
   results <- results[-1,]
@@ -331,7 +333,7 @@ fromList <- function (input) {
 
 ### UNI-METHOD INTER-SAMPLING
 dir.create(file.path(outputpath, 'STATS/unimethod_intersampling'), showWarnings = FALSE)
-
+print('OK')
 for (method in names(feat_by_method_by_samp)){
   methodmatrix <- fromList(feat_by_method_by_samp[[method]])
   methodmatrix$intersect <- rowSums(methodmatrix) 
@@ -344,7 +346,7 @@ for (method in names(feat_by_method_by_samp)){
 
 ### INTER-METHOD INTRA-SAMPLING
 dir.create(file.path(outputpath, 'STATS/intermethod_intrasampling'), showWarnings = FALSE)
-
+print('OK2')
 maxoverlap_of_methods_by_sampling <- list()
 for (samp in names(feat_by_samp_by_method)){
   sampmatrix <- fromList(feat_by_samp_by_method[[samp]])
@@ -363,6 +365,7 @@ for (samp in names(feat_by_samp_by_method)){
   ggsave(paste('STATS/intermethod_intrasampling/',samp,'_UPSETPLOT_intermethod_intrasampling_feats_overlaps.png',sep=""),ggplotify::as.ggplot(upsetPlot),width = 20,height = 7)
   
   sampmatrix_for_interM_interS <- subset(sampmatrix['intersect'], sampmatrix$intersect == max(sampmatrix$intersect)) 
+  print(sampmatrix_for_interM_interS)
   sampmatrix_for_interM_interS <- row.names(sampmatrix_for_interM_interS)
   sampname <- paste('intersect_',samp,'_maxis',as.character(max(sampmatrix$intersect)),sep="")
   maxoverlap_of_methods_by_sampling[[sampname]] <- sampmatrix_for_interM_interS
@@ -371,7 +374,7 @@ for (samp in names(feat_by_samp_by_method)){
 ### INTER-METHOD INTER-SAMPLING
 # Use overlaps max methods intra-sampling (cf ### INTER-METHOD INTRA-SAMPLING) to compare to other sampling
 dir.create(file.path(outputpath, 'STATS/intermethod_intersampling'), showWarnings = FALSE)
-
+print('OK3')
 interM_interS <- fromList(maxoverlap_of_methods_by_sampling)
 interM_interS$intersect <- rowSums(interM_interS) 
 write.csv(interM_interS,paste('STATS/intermethod_intersampling/MATRIX_intermethod_intersampling_feats_overlaps.csv',sep=""),row.names = TRUE)

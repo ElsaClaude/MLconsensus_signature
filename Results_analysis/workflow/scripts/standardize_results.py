@@ -29,9 +29,6 @@ def main():
     outputpath = snakemake.params[2]
     input = snakemake.input
 
-    f = open(outputpath+"finished.txt", "a")
-    f.write("Now the file has more content!")
-    f.close()
     update_file(input,outputpath)
 
 if __name__ == "__main__":

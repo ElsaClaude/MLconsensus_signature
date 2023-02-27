@@ -1,11 +1,4 @@
-# import pandas as pd
-# from sklearn.model_selection import train_test_split
 import os
-import requests
-# import shutil
-# from pathlib import Path
-# import stat
-# import subprocess
 
 def absoluteFilePaths(directory):
     fullpath = []
@@ -25,8 +18,7 @@ def get_status(configtraining, classifiers,scriptpath):
         samp = 'S'+str(samp)+'x'
         for classif in classifiers:
             classifname = '_'.join(classif.split('/')[-1].split('.')[0].split('_')[1:3])
-            stdout = outputdir+'/Training'+name+'/'+samp+'/'+classifname+'/training.out'
-            # stdout = outputdir+'/Training/'+samp+'/'+classifname+'/training.out'
+            stdout = outputdir+'/Training_'+name+'/'+samp+'/'+classifname+'/training.out'
 
             ## count trained models
             with open(stdout,'r') as stdout:
@@ -35,8 +27,7 @@ def get_status(configtraining, classifiers,scriptpath):
             trainedml = trainedml + 1
 
             ## count models TO train (origin)
-            classifconf = outputdir+'/Training'+name+'/'+samp+'/'+classifname+'/classifiers.conf'
-            # classifconf = outputdir+'/Training/'+samp+'/'+classifname+'/classifiers.conf'
+            classifconf = outputdir+'/Training_'+name+'/'+samp+'/'+classifname+'/classifiers.conf'
             nbtotrain = 0
             with open(classifconf,'r') as classifconf:
                 for line in classifconf.readlines() :

@@ -4,7 +4,6 @@
 # in particular regarding the standardized folder structure mentioned there. 
 
 include: "rules/common.smk"
-# include: "rules/make_file_tree.smk"
 include: "rules/stratified_sampling.smk"
 include: "rules/training.smk"
 
@@ -12,4 +11,4 @@ workdir: "scripts/"
 
 rule all:
     input:
-        expand('{output_directory}/Training/Pipeline_LaunchTraining_OK.txt',output_directory = config['output_directory'])
+        expand('{output_directory}/Training_{name}/Pipeline_LaunchTraining_OK.txt',output_directory = config['output_directory'], name=config['name'])

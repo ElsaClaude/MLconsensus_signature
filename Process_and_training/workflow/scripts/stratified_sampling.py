@@ -25,8 +25,8 @@ def stratified_sampling(metadatapath,datapath,samplings,outputdir, name):
         clusters_train = clusters_train.join(labels_train)
         clusters_test = clusters_test.join(labels_test)
 
-        clusters_train.to_csv(outputdir+'/Stratified_sampling/'+name+'_S'+str(i)+'x_train.csv',sep=',',header=True,index=False)
-        clusters_test.to_csv(outputdir+'/Stratified_sampling/'+name+'_S'+str(i)+'x_test.csv',sep=',',header=True, index=False)
+        clusters_train.to_csv(outputdir+'/Stratified_sampling_'+name+'/'+name+'_S'+str(i)+'x_train.csv',sep=',',header=True,index=False)
+        clusters_test.to_csv(outputdir+'/Stratified_sampling_'+name+'/'+name+'_S'+str(i)+'x_test.csv',sep=',',header=True, index=False)
 
     return maxfeat
 
