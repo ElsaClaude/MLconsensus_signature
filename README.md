@@ -20,8 +20,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Give a proposed consensus feature signature as final result**
  
  
-## Pipeline set up
-### 1. Sub-pipeline --> Process and training
+## 1st sub-pipeline set up --> Process and training
 Adjust the `config.yaml` file of the **Process and training** and **Results analysis** step in the config folder.
 
 Help for **Process and training** `config.yaml` file:
@@ -57,5 +56,17 @@ memory: 20G
 ```
 **NB:**
 - To chose which ML models you want to train, you must update the files in `MaLCons/Process_and_training/softs/classifiers_list/`.
-- The training script build SLURM sbatch files to be able to run training jobs. It has been designed to run on Digital Research Alliance of Canada (the Alliance). You can adapt the sbatch file format by modifying the `MaLCons/Process_and_training/workflow/scripts/training.py`
+- The training script build SLURM sbatch files to be able to run training jobs. It has been designed to run on Digital Research Alliance of Canada (the Alliance). You can adapt the sbatch file creation by modifying the `MaLCons/Process_and_training/workflow/scripts/training.py`.
 
+## Requirements
+```
+- Python 3.8.13 (also tested with v 3.8.10):
+   - pandas
+   - sklearn
+   - csv
+   - os
+   - shutil
+   - Path
+   - stat
+- snakemake 7.12.0 (also tested with v 5.31.1)
+```
