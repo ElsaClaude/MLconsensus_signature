@@ -24,7 +24,7 @@ dir.create(file.path(outputpath, 'STATS'), showWarnings = FALSE)
 results_by_samp <- list()
 
 for (run in prefix){
-    runresult <- grep(run, resultsstand, value = TRUE)
+    runresult <- grep(paste(run,"_", sep=""), resultsstand, value = TRUE)
     runresult <- lapply(runresult, read.csv)
     runresult <- bind_rows(runresult)
 
@@ -45,6 +45,7 @@ for (classif in classifnames){
 }
 fullresults$classifier_strat <- paste(fullresults$classifier,fullresults$samp,sep="_")
 fullresults$typeofclassif <- str_to_title(fullresults$typeofclassif)
+
 
 fullresults.filtered <- subset(fullresults, MCC >= threshold_avgmcc & STD_MCC <= threshold_stdmcc)
 
@@ -229,36 +230,46 @@ format_redundant_feats <- function(redundantfeat,infogainshort){
   temp <- colnames(infogainshort)
   infogainorder <- 1:length(temp)
   names(infogainorder) <- temp
+
   redundantfeat <- select(redundantfeat,c('target_feature','correlated_feature'))
-  redundantfeat <- redundantfeat %>% 
+
+  temp2 <- redundantfeat
+  colnames(temp2) <- c('correlated_feature','target_feature')
+  redundantfeat.full <- rbind(redundantfeat, temp2)
+
+  redundantfeat.full <- redundantfeat.full %>% 
     group_by(target_feature) %>% 
     mutate(fullcorr = paste(correlated_feature, collapse= ','))
-  redundantfeat$correlated_feature <- NULL
-  redundantfeat <- redundantfeat[!duplicated(redundantfeat), ]
-  redundantfeat$fullfeat <- apply( redundantfeat[ , c('target_feature','fullcorr') ] , 1 , paste , collapse = "," )
-  redundantfeat$fullcorr <- NULL
+
+  redundantfeat.full$correlated_feature <- NULL
+  redundantfeat.full <- redundantfeat.full[!duplicated(redundantfeat.full), ]
+  redundantfeat.full$fullfeat <- apply( redundantfeat.full[ , c('target_feature','fullcorr') ] , 1 , paste , collapse = "," )
+  redundantfeat.full$fullcorr <- NULL
   
-  returnlist <- list('redundant'=redundantfeat,'infogainorder'=infogainorder)
+  returnlist <- list('redundant'=redundantfeat.full,'infogainorder'=infogainorder)
 }
 
 
 #### check overlap in ONE sampling for models of ONE method ####
 overlapmodels <- function(results,choicesamp,choicemethod,redundantfeat,infogainfeat){
+  results$samp[]
+  # results <- subset(results, results$samp == choicesamp & results$classifier == choicemethod,select = c('ID','samp','AttributeList'))
   results <- subset(results, results$samp == choicesamp & results$classifier == choicemethod,select = c('ID','AttributeList'))
-
-  print(results)
   nbmodels <- length(results$ID)
   results <- separate_rows(results, AttributeList,sep=',', convert = FALSE)
-
   results <- subset(results, ! results$AttributeList %in% c(1,length(infogainfeat))) 
+
   results$AttributeList <- names(infogainfeat)[match(results$AttributeList, infogainfeat)]
   results$AttributeList <- gsub("Transcripto_Gene__", "\\1",results$AttributeList)
   results <- merge(results,redundantfeat,by.x = 'AttributeList',by.y = 'target_feature',all.x=T)
   results <- results %>% 
     mutate(fullfeat = coalesce(fullfeat,AttributeList))
+    # print('FULL FEAT')
+    # print(results$fullfeat)
   results$AttributeList <- NULL
   results <- separate_rows(results, fullfeat,sep=',', convert = FALSE)
   results <- results[!duplicated(results), ]
+  
   if(dim(results)[1] == 0) { return(results)}
   results <- setattr(results, "class", c("data.table"))
 
@@ -278,6 +289,7 @@ overlapmodels <- function(results,choicesamp,choicemethod,redundantfeat,infogain
   #   # results.intervals <- as.data.frame(table( cut(results$percentmodels, b = c(0,1,5,10,20,30,90,100), include.lowest = TRUE)))
   # # results.intervals <- rename( results,Percent_of_models=Var1,Number_of_features=Freq)
   # returnlist <- list('results'=results,'resultsforupset'=results.forupset)
+
   results
   }
 
@@ -304,7 +316,7 @@ for (run in prefix){
 
             }
         }
-
+      # print(fullresults.filtered$AttributeList)
       run.modelsinmethod.overlaps <- overlapmodels(fullresults.filtered,run,classif,data.frame(runfeat[[1]]),runfeat[[2]])
       write_csv(run.modelsinmethod.overlaps,paste('STATS/intramethod_intrasampling/',classif,'_',run,'_FILTERED_MCC',threshold_avgmcc,'_STDMCC',threshold_stdmcc,'_involved_feats_overlaps.csv',sep=""))
       
@@ -348,6 +360,7 @@ for (method in names(feat_by_method_by_samp)){
 dir.create(file.path(outputpath, 'STATS/intermethod_intrasampling'), showWarnings = FALSE)
 print('OK2')
 maxoverlap_of_methods_by_sampling <- list()
+print(names(feat_by_samp_by_method))
 for (samp in names(feat_by_samp_by_method)){
   sampmatrix <- fromList(feat_by_samp_by_method[[samp]])
   sampmatrix$intersect <- rowSums(sampmatrix) 
@@ -363,9 +376,8 @@ for (samp in names(feat_by_samp_by_method)){
                       matrix.dot.alpha = 0.6,
                       text.scale = 3.0)
   ggsave(paste('STATS/intermethod_intrasampling/',samp,'_UPSETPLOT_intermethod_intrasampling_feats_overlaps.png',sep=""),ggplotify::as.ggplot(upsetPlot),width = 20,height = 7)
-  
   sampmatrix_for_interM_interS <- subset(sampmatrix['intersect'], sampmatrix$intersect == max(sampmatrix$intersect)) 
-  print(sampmatrix_for_interM_interS)
+
   sampmatrix_for_interM_interS <- row.names(sampmatrix_for_interM_interS)
   sampname <- paste('intersect_',samp,'_maxis',as.character(max(sampmatrix$intersect)),sep="")
   maxoverlap_of_methods_by_sampling[[sampname]] <- sampmatrix_for_interM_interS

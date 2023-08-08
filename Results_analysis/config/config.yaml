@@ -48,5 +48,5 @@ classif_options : /home/eclaude/Documents/These/Runs_BDML/Parameters_config_DB/n
 genome_ref_dir : /home/eclaude/Documents/These/REF_datasets/
 avg_mcc_threshold : 0.7
 std_mcc : 0.1
-input_path: /home/eclaude/Documents/These/Runs_BDML/paper_NAR_GaB/CRC_TCGA_vst_DEG_filtered/strat_sampling/
-output_path: /home/eclaude/Documents/These/evaluate_models/paper_NAR_GaB/CRC_TCGA_vst_DEG_filtered_TEST2/strat_sampling/
+input_path: /home/eclaude/Documents/These/Runs_BDML/paper_NAR_GaB/CRC_TCGA_vst_DEG_filtered/strat_sampling_CopyForDebug/
+output_path: /home/eclaude/Documents/These/evaluate_models/paper_NAR_GaB/CRC_TCGA_vst_DEG_filtered_TEST_FIX/strat_sampling/

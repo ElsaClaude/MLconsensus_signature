@@ -22,7 +22,7 @@ rule correlated_features_relationships:
         inputpath = config['input_path'],
         prefix = config['prefix'],
         runname = config['run_name'],
-        suffix=["RELATIONSHIPS","RELATIONSHIPS_FILTERED_MCC"+str(config['avg_mcc_threshold']).replace('.','')+"_STD"+str(config['std_mcc']).replace('.','')])
+        suffix=["RELATIONSHIPS","RELATIONSHIPS_FILTERED_MCC"+str(config['avg_mcc_threshold']).replace('.','')+"_STD"+str(config['std_mcc']).replace('.','')]),
 
     output:
         expand('{inputpath}{prefix}/NEO4J/{runname}_{prefix}_{suffix}.csv',

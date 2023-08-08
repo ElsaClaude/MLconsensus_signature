@@ -23,7 +23,11 @@ rule stats:
         inputpath = config['input_path'],
         prefix = config['prefix'],
         runname = config['run_name'],
-        classifiers = config['classifiers'])
+        classifiers = config['classifiers']),
+
+        corrfeat = expand('{inputpath}{prefix}/NEO4J/Corr_OK.txt',
+        inputpath = config['input_path'],
+        prefix = config['prefix'])
 
     output:
         expand('{outputpath}finished.txt', outputpath = config['output_path'])

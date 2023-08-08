@@ -17,6 +17,10 @@ rule correlated_features:
         inputpath = config['input_path'],
         prefix = config['prefix'],
         runname = config['run_name'],
-        suffix=["CORRFEAT","CORRFEAT_FILTERED_MCC"+str(config['avg_mcc_threshold']).replace('.','')+"_STD"+str(config['std_mcc']).replace('.','')])
+        suffix=["CORRFEAT","CORRFEAT_FILTERED_MCC"+str(config['avg_mcc_threshold']).replace('.','')+"_STD"+str(config['std_mcc']).replace('.','')]),
+
+        expand('{inputpath}{prefix}/NEO4J/Corr_OK.txt',
+        inputpath = config['input_path'],
+        prefix = config['prefix'])
     script:
         "../scripts/correlated_features.py"

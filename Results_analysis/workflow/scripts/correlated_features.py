@@ -11,8 +11,6 @@ def create_corr_feat(NEO4Jcorr,NEO4Jfeat,inputpath , run,outputname,suffix):
     toadd = list(set(toadd) - set(toremove))
     toadd = pd.DataFrame(toadd,columns=['Unique_Feature_Name'])
 
-    print(toadd)
-
     toadd.to_csv(inputpath+run+'/NEO4J/'+outputname+'_'+run+'_CORRFEAT'+suffix+'.csv',sep=',',index=False)
 
 def main():
@@ -43,6 +41,10 @@ def main():
 
         create_corr_feat(NEO4Jcorr_notfilt,NEO4Jfeat_notfilt,inputpath , run,runname,"")
         create_corr_feat(NEO4Jcorr_filt,NEO4Jfeat_filt,inputpath , run,runname,"_FILTERED_MCC"+thresholdavgmcc+'_STD'+thresholdstdmcc)
+        
+        f = open(inputpath+run+'/NEO4J/Corr_OK.txt', "a")
+        f.write("Corr OK !")
+        f.close()
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,6 @@
+ImportError in line 2 of /home/eclaude/Documents/These/MLconsensus_signature/Results_analysis/workflow/rules/common.smk:
+Unable to import required dependencies:
+numpy: No module named 'numpy'
+  File "/home/eclaude/Documents/These/MLconsensus_signature/Results_analysis/workflow/Snakefile", line 6, in <module>
+  File "/home/eclaude/Documents/These/MLconsensus_signature/Results_analysis/workflow/rules/common.smk", line 2, in <module>
+  File "/home/eclaude/.local/lib/python3.8/site-packages/pandas/__init__.py", line 16, in <module>

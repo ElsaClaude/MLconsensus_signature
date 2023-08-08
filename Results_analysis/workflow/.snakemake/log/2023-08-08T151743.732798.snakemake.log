@@ -1,0 +1,3 @@
+SyntaxError in line 28 of /home/eclaude/Documents/These/MLconsensus_signature/Results_analysis/workflow/rules/stats.smk:
+positional argument follows keyword argument
+  File "/home/eclaude/Documents/These/MLconsensus_signature/Results_analysis/workflow/Snakefile", line 12, in <module>

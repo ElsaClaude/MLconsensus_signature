@@ -126,14 +126,13 @@ def main():
     classifnames = pd.DataFrame.from_dict(classifdict)
 
     for run in prefix :
-        print(run+' IS RUN')
         if not os.path.exists(inputpath+run+'/NEO4J') :
             print('NEO4J folder does not exist : '+run)
             os.makedirs(inputpath+run+'/NEO4J')
             print('NEO4J folder created')
 
         runbdmlresults = list(filter(lambda k: run in k.split('/'), BDML_results_path))
-        # print(runbdmlresults)
+
         runbdmlig = ''.join(list(filter(lambda k: run in k.split('/'), BDML_info_gain_path)))
         runfullig = ''.join(list(filter(lambda k: run in k.split('/'), fullinfogainfiles)))
 
