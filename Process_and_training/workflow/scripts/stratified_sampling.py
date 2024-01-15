@@ -20,7 +20,6 @@ def stratified_sampling(metadatapath,datapath,samplings,outputdir, name):
     truelabel = fulldata.pop('Label')
 
     for i in range(1,samplings+1,1):
-        print(i)
         clusters_train, clusters_test, labels_train, labels_test = train_test_split( fulldata, truelabel, test_size=1/3, stratify=clusterslist)
         clusters_train = clusters_train.join(labels_train)
         clusters_test = clusters_test.join(labels_test)

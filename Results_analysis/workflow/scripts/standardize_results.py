@@ -10,7 +10,6 @@ def update_file(input,outputpath):
         inputdf = read_csv(inputfile, delimiter='\t')
 
         inputdf = inputdf.drop(inputdf[inputdf['ID'] == 'Resumed here'].index)
-        print(inputdf.ID)
         inputdf = inputdf[~inputdf.ID.str.contains("error", na=True)]
 
         ## Standardize ID field to remove duplicates

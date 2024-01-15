@@ -6,7 +6,6 @@ library(UpSetR)
 library(ggh4x)
 library(stringr)
 
-
 prefix <- snakemake@params[['prefix']]
 outputpath <- snakemake@params[['outputpath']]
 runname <- snakemake@params[['runname']]
@@ -52,7 +51,7 @@ fullresults.filtered <- subset(fullresults, MCC >= threshold_avgmcc & STD_MCC <=
 write.csv(table(fullresults$classifier,fullresults$samp),'STATS/stat_classif_before_filters.csv')
 write.csv(table(fullresults.filtered$classifier,fullresults.filtered$samp),paste('STATS/stat_classif_after_filters_MCC',gsub('\\.', '', as.character(threshold_avgmcc)),'_STD',gsub('\\.', '', as.character(threshold_stdmcc)),'.csv',sep=""))
 
-## VIOLIN PLOTS
+## BOXPLOTS
 order_classif <- fullresults[c("classifier","typeofclassif")]
 order_classif <- order_classif[order(order_classif$typeofclassif),]
 order_classif <- unique(order_classif$classif)
@@ -68,11 +67,8 @@ fullresults <- fullresults[!is.na(fullresults$STD_MCC),]
 fullresults$samp <- factor(fullresults$samp, 
                        levels = prefix )
 
-## TO-DO : automate colors...
-violin.MCC<- ggplot(fullresults, aes(x=samp, y=MCC, color=classifier)) + 
+boxplot.MCC<- ggplot(fullresults, aes(x=samp, y=MCC, color=classifier)) + 
   geom_boxplot()+
-  # stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1),
-  #               geom="errorbar", color="black",size=0.4,width = 0.3)+
   facet_nested(.~typeofclassif+classifier,
   labeller = label_wrap_gen(5),
   strip = strip_nested(size = "variable"),
@@ -102,7 +98,7 @@ violin.MCC<- ggplot(fullresults, aes(x=samp, y=MCC, color=classifier)) +
   scale_color_manual(values=c("#af0648", "#d20811","#fc3b5d", "#f1c232","#04a424","#666cf0","#789cfb", "#78bdfb"),drop=FALSE)+
   geom_hline(aes(yintercept = 0.7),color="red", linetype="dashed")
 
-violin.STDMCC<- ggplot(fullresults, aes(x=samp, y=STD_MCC, color=classifier)) + 
+boxplot.STDMCC<- ggplot(fullresults, aes(x=samp, y=STD_MCC, color=classifier)) + 
   geom_boxplot() +
   facet_nested(.~typeofclassif+classifier,
   labeller = label_wrap_gen(5),
@@ -110,11 +106,7 @@ violin.STDMCC<- ggplot(fullresults, aes(x=samp, y=STD_MCC, color=classifier)) +
   scales = "free",
   space='free'
   )+
-  # guides(fill = guide_legend(override.aes = list(size = 0.25)))+
   guides(colour = guide_legend(nrow = 2,title="Classifier"))+
-
-  # stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1),
-  #              geom="errorbar", color="black",size=0.4,width = 0.3)+
   scale_y_continuous(breaks=seq(0,0.7,by=0.1))+
   xlab("Run")+
   ylab("STD MCC")+
@@ -134,8 +126,8 @@ violin.STDMCC<- ggplot(fullresults, aes(x=samp, y=STD_MCC, color=classifier)) +
   scale_color_manual(values=c("#af0648", "#d20811","#fc3b5d", "#f1c232","#04a424","#666cf0","#789cfb", "#78bdfb"),drop=FALSE)+
   geom_hline(aes(yintercept = 0.1),color="red", linetype="dashed")
 
-## save violin plot MMC + STD MCC
-violins.MCC_and_STDMCC <- cowplot::plot_grid(violin.MCC, violin.STDMCC, 
+## save boxplot plot MMC + STD MCC
+boxplots.MCC_and_STDMCC <- cowplot::plot_grid(boxplot.MCC, boxplot.STDMCC, 
                                              ncol = 1, rel_heights = c(0.6, 0.7),
                                              align = 'v', axis = 'lr')
 ggsave("STATS/boxplot_MCC_and_STDMCC_params_sensi_onlyMCCopti_FB_DASH_LINE.png",violins.MCC_and_STDMCC, width = 12,height = 8)
@@ -163,8 +155,6 @@ geomcountplot.full.nbfeat <- ggplot(fullresults.filtered, aes(x=samp, y=nbrOfFea
   scales = "free",
   space='free'
   )+
-  # facet_grid(. ~ typeofclassif, scales = "free_x", space ="free_x")+
-#   ,labeller = labeller(typeofclassif = supp.labs))+
   scale_size_area(max_size = 4)+
   guides(fill = guide_legend(nrow = 2,override.aes = list(size = 5)))+
   labs(fill="Classifier", size="Proportion by classifier")+
@@ -186,7 +176,6 @@ geomcountplot.full.nbfeat <- ggplot(fullresults.filtered, aes(x=samp, y=nbrOfFea
         strip.background = element_rect(
           color="black", size=1, linetype="solid"),
           legend.key = element_rect(fill = NA))+
-        #   theme(aspect.ratio = 1) +
   scale_y_continuous(breaks=seq(0,max(fullresults.filtered$nbrOfFeatures),1),limits=c(0,max(fullresults.filtered$nbrOfFeatures)),expand = c(0,0))+
   scale_fill_manual(values=c("#af0648", "#d20811","#fc3b5d", "#f1c232","#04a424","#666cf0","#789cfb", "#78bdfb"),drop=FALSE)
 ggsave(paste('STATS/MCC',gsub('\\.', '', as.character(threshold_avgmcc)),'_STD',gsub('\\.', '', as.character(threshold_stdmcc)),'FILTERED_geomcountplot_proportionate_nbfeat.png',sep=""),geomcountplot.full.nbfeat,width = 12,height = 7)
@@ -253,7 +242,6 @@ format_redundant_feats <- function(redundantfeat,infogainshort){
 #### check overlap in ONE sampling for models of ONE method ####
 overlapmodels <- function(results,choicesamp,choicemethod,redundantfeat,infogainfeat){
   results$samp[]
-  # results <- subset(results, results$samp == choicesamp & results$classifier == choicemethod,select = c('ID','samp','AttributeList'))
   results <- subset(results, results$samp == choicesamp & results$classifier == choicemethod,select = c('ID','AttributeList'))
   nbmodels <- length(results$ID)
   results <- separate_rows(results, AttributeList,sep=',', convert = FALSE)
@@ -264,8 +252,6 @@ overlapmodels <- function(results,choicesamp,choicemethod,redundantfeat,infogain
   results <- merge(results,redundantfeat,by.x = 'AttributeList',by.y = 'target_feature',all.x=T)
   results <- results %>% 
     mutate(fullfeat = coalesce(fullfeat,AttributeList))
-    # print('FULL FEAT')
-    # print(results$fullfeat)
   results$AttributeList <- NULL
   results <- separate_rows(results, fullfeat,sep=',', convert = FALSE)
   results <- results[!duplicated(results), ]
@@ -286,10 +272,6 @@ overlapmodels <- function(results,choicesamp,choicemethod,redundantfeat,infogain
   results <- as.data.frame(results)
   results$feat <- row.names(results)
   results$percentmodels <- results$results*100/nbmodels
-  #   # results.intervals <- as.data.frame(table( cut(results$percentmodels, b = c(0,1,5,10,20,30,90,100), include.lowest = TRUE)))
-  # # results.intervals <- rename( results,Percent_of_models=Var1,Number_of_features=Freq)
-  # returnlist <- list('results'=results,'resultsforupset'=results.forupset)
-
   results
   }
 
@@ -316,11 +298,9 @@ for (run in prefix){
 
             }
         }
-      # print(fullresults.filtered$AttributeList)
       run.modelsinmethod.overlaps <- overlapmodels(fullresults.filtered,run,classif,data.frame(runfeat[[1]]),runfeat[[2]])
       write_csv(run.modelsinmethod.overlaps,paste('STATS/intramethod_intrasampling/',classif,'_',run,'_FILTERED_MCC',threshold_avgmcc,'_STDMCC',threshold_stdmcc,'_involved_feats_overlaps.csv',sep=""))
       
-      ## warning : THIS WAY DOES NOT STORE PERCENT MODELS IN WHICH IT IS !!!
       feat_by_samp_by_method[[run]][[classif]] <- run.modelsinmethod.overlaps$feat
 
       feat_by_method_by_samp[[classif]][[run]] <- run.modelsinmethod.overlaps$feat
@@ -328,7 +308,6 @@ for (run in prefix){
 }
 
 fromList <- function (input) {
-  # Same as original fromList()...
   elements <- unique(unlist(input))
   data <- unlist(lapply(input, function(x) {
     x <- as.vector(match(elements, x))
@@ -338,14 +317,12 @@ fromList <- function (input) {
   data <- data.frame(matrix(data, ncol = length(input), byrow = F))
   data <- data[which(rowSums(data) != 0), ]
   names(data) <- names(input)
-  # ... Except now it conserves your original value names!
   row.names(data) <- elements
   return(data)
 }
 
 ### UNI-METHOD INTER-SAMPLING
 dir.create(file.path(outputpath, 'STATS/unimethod_intersampling'), showWarnings = FALSE)
-print('OK')
 for (method in names(feat_by_method_by_samp)){
   methodmatrix <- fromList(feat_by_method_by_samp[[method]])
   methodmatrix$intersect <- rowSums(methodmatrix) 
@@ -358,9 +335,7 @@ for (method in names(feat_by_method_by_samp)){
 
 ### INTER-METHOD INTRA-SAMPLING
 dir.create(file.path(outputpath, 'STATS/intermethod_intrasampling'), showWarnings = FALSE)
-print('OK2')
 maxoverlap_of_methods_by_sampling <- list()
-print(names(feat_by_samp_by_method))
 for (samp in names(feat_by_samp_by_method)){
   sampmatrix <- fromList(feat_by_samp_by_method[[samp]])
   sampmatrix$intersect <- rowSums(sampmatrix) 
@@ -386,7 +361,6 @@ for (samp in names(feat_by_samp_by_method)){
 ### INTER-METHOD INTER-SAMPLING
 # Use overlaps max methods intra-sampling (cf ### INTER-METHOD INTRA-SAMPLING) to compare to other sampling
 dir.create(file.path(outputpath, 'STATS/intermethod_intersampling'), showWarnings = FALSE)
-print('OK3')
 interM_interS <- fromList(maxoverlap_of_methods_by_sampling)
 interM_interS$intersect <- rowSums(interM_interS) 
 write.csv(interM_interS,paste('STATS/intermethod_intersampling/MATRIX_intermethod_intersampling_feats_overlaps.csv',sep=""),row.names = TRUE)

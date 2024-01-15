@@ -45,7 +45,7 @@ def create_tree_file(samplings,scriptpath,classifiers,outputdir, name,cpus,maxfe
             job.write('#SBATCH --error='+outputdir+'/Training_'+name+'/'+samp+'/'+classifname+'/training.err'+'\n')
 
             ### optional
-            job.write('#SBATCH --account=rrg-adroit-ab\n')
+            job.write('#SBATCH --account=\n')
 
             ### Running time depending on classifier to train (POSSIBLE TO MODIFY)
             if classifname == 'BAYES_NB':
@@ -62,7 +62,7 @@ def create_tree_file(samplings,scriptpath,classifiers,outputdir, name,cpus,maxfe
             ### training command
             job.write('cd '+outputdir+'/Training_'+name+'/'+samp+'/'+classifname+';')
             job.write('module load java/1.8.0_192;')
-            job.write('time java -Xmx'+memory+' -XX:+HeapDumpOnOutOfMemoryError -jar '+scriptpath+'/../../softs/BioDiscML/biodiscml_02_12_2022.jar -train -config config.conf')
+            job.write('time java -Xmx'+memory+' -XX:+HeapDumpOnOutOfMemoryError -jar '+scriptpath+'/../../softs/BioDiscML/biodiscml.jar -train -config config.conf')
 
             job.close()
 
