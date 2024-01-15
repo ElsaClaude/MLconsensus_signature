@@ -86,14 +86,20 @@ Here is an overview of the output file tree structure :
         └── SPEARMAN/  
 ```
 The ```Results_[ProjectName]``` directory contains all wrappers results and aggregation output as well as intermediate results : 
-- boxplot is a general visualization of performance of all wrappers trained
-- geomcoutplot is an overview of all wrappers non redundant signature length
-- STATS directory gathers all intermediate results where -->
-   - intermethod_intersampling : highest level of aggregation as described in our paper. In the table, variables having an intersect of 5 are composing the potential stable signature.
-   - intermethod_intrasampling : TO-DO
-   - intramethod_intrasampling : 
-   - unimethod_intersampling : 
-
+- STATS directory gathers all final and intermediate results where -->
+   - intermethod_intersampling : highest level of aggregation as described in our paper. In the table, variables having an intersect of (1/2)n  sampling runs are composing the potential stable signature.
+   - intermethod_intrasampling : Intermediate results, exploration of signature composition comparison between types of classifiers considering one sampling run at a time
+   - intramethod_intrasampling : Intermediate results, exploration of signature composition comparison between models of a same type of classifier and considering one sampling run at a time
+   - unimethod_intersampling : Intermediate results, exploration of signature composition comparison between one type of classifier at the time and through all sampling runs
+   - boxplot is a general visualization of performance of all wrappers trained
+   - geomcoutplot is an overview of all wrappers non redundant signature length
+- Stratified_sampling_[ProjectName] directory gathers all pairs of train/test subsets for all sampling runs
+- Training_[ProjectName] contains all sampling runs raw data
+   - each Snx directory presents :
+      - one directory/type of classifier with results of all associated trained models
+      - an INFOGAIN directory : information gain scores to retrieve redundant features in the associated sampling run
+      - a NEO4J directory : all data formated to be included in a NEO4J vizualisation if needed
+      - PEARSON and SPEARMAN directories : all pearson and spearman correlation scores to retrieve additionnal redundant features in the associated sampling run 
 
 ## Requirements
 ```
