@@ -57,7 +57,6 @@ def create_features_DF(BDML_info_gain,results):
 
     FeaturesDF = BDML_info_gain[BDML_info_gain['count'].isin(FeaturesDF)]
 
-    ###### WARNING : modify to suit better final nomenclature [?]
     FeaturesDF = FeaturesDF.drop(columns=['count'])
 
     results['Class_Label'] = '_VS_'.join(alllabels)
@@ -106,7 +105,6 @@ def main():
     BDML_info_gain_path = snakemake.input[nbexp:-len(snakemake.params[2])]
 
     classifnames = snakemake.params[4]
-    # refdir = snakemake.params[5]
     runname = snakemake.params[5]
 
     thresholdavgmcc = snakemake.params[6]

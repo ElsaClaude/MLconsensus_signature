@@ -44,7 +44,6 @@ Args:
         None
     """    
     for i in range(i_start, i_end):
-        # print(i,'/',i_end)
         temp = np.dot(datam[i:], datam[i].T)
         rs = temp / (datass[i:] * datass[i])
         rs = np.delete(rs, [0])
@@ -80,11 +79,7 @@ Args:
         d = np.subtract(ranks[i:], ranks[i].T)
         dsquare = d**2
         sumdsquare = np.sum(dsquare, axis=1)
-        # temp = np.dot(ranks[i:], ranks[i].T)
-        # print(sumdsquare)
         rs = 1-((6*sumdsquare)/denum)
-        # print(rs)
-        # rs = temp / (datass[i:] * datass[i])
         rs = np.delete(rs, [0])
         # Create nparray that contains information about the indices
         res = np.zeros((rs.shape[0], 3))
@@ -133,7 +128,6 @@ def get_pearson_corr_matrices(fulldata,inputpath,run):
     file.close()
 
     items = pd.read_csv(fulldata, header = 0,sep='\t')
-    # print(items)
     items = items.drop(columns=['Instance','class'])
     items = items.T
     numpy_items = items.to_numpy()
@@ -161,7 +155,6 @@ def get_pearson_corr_matrices(fulldata,inputpath,run):
         end = s_indices[i + 1]
         pairings_chunks.append(sum(range(n - end, n - start)))
 
-    # print(numpy_items)
     ms = numpy_items.mean(axis=1)[(slice(None,None,None),None)]
     datam = numpy_items - ms
     datass = np.sqrt(np.sum(datam*datam, axis=1))
@@ -188,8 +181,6 @@ def get_pearson_corr_matrices(fulldata,inputpath,run):
 
     for r in workers:
         r.wait()
-        # r.get()
-
 
     # Close the pool and wait till all workers are done
     q.put('kill')
@@ -213,7 +204,6 @@ def get_spearman_rank_corr_matrices(fulldata,inputpath,run):
     denum = nsamples*((nsamples*nsamples)-1)
     items = items.T
     ranks = items.to_numpy()
-    # print(ranks)
 
     ## Chunck dataset
     n_chunks = 50 # Number of chunks
@@ -238,14 +228,6 @@ def get_spearman_rank_corr_matrices(fulldata,inputpath,run):
         end = s_indices[i + 1]
         pairings_chunks.append(sum(range(n - end, n - start)))
 
-    # ms = ranks.mean(axis=1)[(slice(None,None,None),None)]
-    # datam = ranks - ms
-    # datass = np.sqrt(np.sum(datam*datam, axis=1))
-    # print(datam)
-    # print(type(datam))
-    # print(ranks)
-    # print(type(ranks))
-
     # Create pool of worker processes which will carry out the computation
     #must use Manager queue here, or will not work
     manager = mp.Manager()
@@ -268,9 +250,6 @@ def get_spearman_rank_corr_matrices(fulldata,inputpath,run):
 
     for r in workers:
         r.wait()
-        # r.get()
-
-
 
     # Close the pool and wait till all workers are done
     q.put('kill')
@@ -327,7 +306,6 @@ def get_info_gain(fulldata, inputpath, run):
     resdf.to_csv(inputpath+run+'/INFOGAIN/INFOGAIN.csv',index=False,sep=',',header=True)
 
 def redundancy(input,inputpath,runs):
-    print(inputpath)
     ## CHECK IF FOLDER PEARSON AND SPEARMAN EXIST :
     for run in runs :
         if not os.path.exists(inputpath+run+'/PEARSON') :
@@ -347,7 +325,6 @@ def redundancy(input,inputpath,runs):
 
         for inputfile in input :
             if '_'+run+'_' in inputfile :
-                print(inputfile)
                 concatfilepearson = get_pearson_corr_matrices(inputfile, inputpath,run)
                 map_index_to_feature_name(inputfile,concatfilepearson)  
                 print('PEARSON OK : '+run)
@@ -363,10 +340,6 @@ def redundancy(input,inputpath,runs):
                 get_info_gain(inputfile, inputpath, run)
     jvm.stop()
 
-
-
-
-
 def main():
     inputpath = snakemake.params[0]
     runs = snakemake.params[1]
@@ -374,11 +347,6 @@ def main():
     input = snakemake.input[:nbrun]
 
     redundancy(input,inputpath,runs)
-
-    outputpath = snakemake.params[2]
-    # f = open(outputpath+"finished.txt", "a")
-    # f.write("Now the file has more content!")
-    # f.close()
 
 if __name__ == "__main__":
     main()
