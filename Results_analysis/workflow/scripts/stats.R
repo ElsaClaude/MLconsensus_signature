@@ -130,7 +130,7 @@ boxplot.STDMCC<- ggplot(fullresults, aes(x=samp, y=STD_MCC, color=classifier)) +
 boxplots.MCC_and_STDMCC <- cowplot::plot_grid(boxplot.MCC, boxplot.STDMCC, 
                                              ncol = 1, rel_heights = c(0.6, 0.7),
                                              align = 'v', axis = 'lr')
-ggsave("STATS/boxplot_MCC_and_STDMCC_params_sensi_onlyMCCopti_FB_DASH_LINE.png",violins.MCC_and_STDMCC, width = 12,height = 8)
+ggsave("STATS/boxplot_MCC_and_STDMCC_params_sensi_onlyMCCopti_FB_DASH_LINE.png",boxplots.MCC_and_STDMCC, width = 12,height = 8)
 
 ## COUNT NBFEAT
 
