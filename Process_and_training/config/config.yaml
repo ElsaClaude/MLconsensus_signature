@@ -1,7 +1,7 @@
-input_data: /home/elsa/projects/rrg-adroit-ab/elsa/Thesis/Data/data_test_paper_pipeline
+input_data: /home/eclaude/Documents/These/TEST_PIPELINE_PAPIER/data
 metadata_file: CRC_METADATA.csv
 data_file: CRC_gene_data.csv
-output_directory: /home/elsa/projects/rrg-adroit-ab/elsa/Thesis/test_paper_pipeline/output
+output_directory: /home/eclaude/Documents/These/TEST_PIPELINE_PAPIER/output
 name: TestPipelinePaper2
 nb_samplings: 3
 cpus: 2
