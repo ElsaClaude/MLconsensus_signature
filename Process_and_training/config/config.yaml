@@ -1,8 +1,8 @@
-input_data: /home/eclaude/Documents/These/TEST_PIPELINE_PAPIER/data
-metadata_file: CRC_METADATA.csv
-data_file: CRC_gene_data.csv
-output_directory: /home/eclaude/Documents/These/TEST_PIPELINE_PAPIER/output
-name: TestPipelinePaper2
-nb_samplings: 3
-cpus: 2
-memory: 20G
+input_data: /mnt/projects_tn03/EClaude_HEFS-DB/DL_TCGA_data_variance_filtering_and_clustering/TCGA_REPO_OUTPUT_whereDEG_005padj/BRCA/Input_data_for_HEFS
+metadata_file: BRCA_Var_StageIIIvsStageIV_analysis_metadata_sampleID_Label_clusterID.csv
+data_file: BRCA_Var_StageIIIvsStageIV_analysis_data_logCPM.csv
+output_directory: /mnt/projects_tn03/EClaude_HEFS-DB/DL_TCGA_data_variance_filtering_and_clustering/HEFS_MaLCons/Full_Results_for_THeBiom/BRCA/Var/StageIIIvsStageIV
+name: BRCA_Var_StageIIIvsStageIV
+nb_samplings: 10
+cpus: 10
+memory: 150G

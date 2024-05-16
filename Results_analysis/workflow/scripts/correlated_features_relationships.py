@@ -21,7 +21,14 @@ def create_relationships(NEO4JmfRelationShips,fullIG,pears ,spear,inputpath,runn
     correlatedIG = correlatedIG.rename(columns={'feature_x': 'target_feature', 'feature_y': 'correlated_feature'})
     correlatedIG = correlatedIG[correlatedIG['target_feature'] != correlatedIG['correlated_feature']]
 
-    correlatedIG['check_string'] = correlatedIG.apply(lambda row: ''.join(sorted([row['target_feature'], row['correlated_feature']])), axis=1)
+    print(correlatedIG)
+    try :
+        correlatedIG['check_string'] = correlatedIG.apply(lambda row: ''.join(sorted([row['target_feature'], row['correlated_feature']])), axis=1)
+    except :
+        correlatedIG['check_string'] = ''
+    
+    print(correlatedIG)
+    print('END')
     correlatedIG = correlatedIG.drop_duplicates('check_string')
     correlatedIG = correlatedIG.drop(columns=['check_string'])
 
@@ -73,7 +80,7 @@ def main():
         pears = ''.join(list(filter(lambda k: run in k.split('/'), runs_pearson)))
 
         spear = ''.join(list(filter(lambda k: run in k.split('/'), runs_spearman)))
-
+        print(run)
         create_relationships(NEO4JmfRelationShips_notfilt,fullIG,pears ,spear,inputpath,runname, run, "")
         create_relationships(NEO4JmfRelationShips_filt,fullIG,pears ,spear,inputpath,runname,run,"_FILTERED_MCC"+thresholdavgmcc+'_STD'+thresholdstdmcc)
         

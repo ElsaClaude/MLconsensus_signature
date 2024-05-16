@@ -1,0 +1,47 @@
+prefix:
+  - S1x
+  - S2x
+  - S3x
+  - S4x
+  - S5x
+  - S6x
+  - S7x
+  - S8x
+  - S9x
+  - S10x
+run_name: HNSC_DEG_NormalvsStageIII
+classifiers:
+  - FUNCTIONS_SVM
+  - BAYES_NB
+  - TREES_C45
+  - BAYES_A1DE
+  - TREES_RF
+classifiers_weka_name:
+  BAYES_A1DE:
+    - weka: bayes.AveragedNDependenceEstimators.A1DE
+    - change: A1DE
+  BAYES_BN:
+    - weka: bayes.BayesNet
+    - change: Bayes Network
+  BAYES_NB:
+    - weka: bayes.NaiveBayes
+    - change: Naive Bayes
+  TREES_C45:
+    - weka: trees.J48
+    - change: C4.5
+  TREES_RF:
+    - weka: trees.RandomForest
+    - change: Random Forest
+  TREES_CART:
+    - weka: trees.SimpleCart
+    - change: Simple Cart
+  LAZY_kNN:
+    - weka: lazy.IBk
+    - change: kNN
+  FUNCTIONS_SVM:
+    - weka: functions.SMO
+    - change: SVM
+avg_mcc_threshold: 0.7
+std_mcc: 0.1
+input_path: /mnt/projects_tn03/EClaude_HEFS-DB/DL_TCGA_data_variance_filtering_and_clustering/HEFS_MaLCons/Full_Results_for_THeBiom/HNSC/DEG/NormalvsStageIII/Training_HNSC_DEG_NormalvsStageIII/
+output_path: /mnt/projects_tn03/EClaude_HEFS-DB/DL_TCGA_data_variance_filtering_and_clustering/HEFS_MaLCons/Full_Results_for_THeBiom/HNSC/DEG/NormalvsStageIII/Results_HNSC_DEG_NormalvsStageIII/

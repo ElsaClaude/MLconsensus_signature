@@ -1,4 +1,14 @@
 import os
+import argparse
+
+def get_arg(scriptpath):
+    configtraining = scriptpath+'/Process_and_training/config/config.yaml'
+
+    parser = argparse.ArgumentParser(description="A program to check HEFS training.")
+    parser.add_argument('-config', nargs='?', default=configtraining)
+    args = parser.parse_args()
+
+    return args.config
 
 def absoluteFilePaths(directory):
     fullpath = []
@@ -44,12 +54,11 @@ def get_status(configtraining, classifiers,scriptpath):
 
 def main():
     scriptpath = os.path.dirname(os.path.abspath(__file__))
-    configtraining = scriptpath+'/Process_and_training/config/config.yaml'
-
+    configfile = get_arg(scriptpath)
     classifiers = scriptpath+'/Process_and_training/softs/classifiers_list/'
     classifiers = absoluteFilePaths(classifiers)
 
-    get_status(configtraining,classifiers,scriptpath)
+    get_status(configfile,classifiers,scriptpath)
 
 if __name__ == "__main__":
     main()

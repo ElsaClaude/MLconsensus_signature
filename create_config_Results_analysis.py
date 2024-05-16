@@ -1,4 +1,15 @@
 import os
+import argparse
+
+def get_arg(scriptpath):
+    configtraining = scriptpath+'/Process_and_training/config/config.yaml'
+
+    parser = argparse.ArgumentParser(description="A program to setup HEFS method.")
+    parser.add_argument('-config', nargs='?', default=configtraining)
+    parser.add_argument('-dirconfigres', nargs='?', default=scriptpath+'/Results_analysis/config/')
+    args = parser.parse_args()
+
+    return args.config, args.dirconfigres
 
 def absoluteFilePaths(directory):
     fullpath = []
@@ -7,14 +18,14 @@ def absoluteFilePaths(directory):
             fullpath.append(os.path.abspath(os.path.join(dirpath, f)))
     return fullpath
 
-def create_config(configtraining, classifiers,scriptpath):
+def create_config(configtraining,dirconfigres,classifiers,scriptpath):
     with open(configtraining,'r') as training:
         training = training.read()
         outputdir = training.split('output_directory: ')[1].split('\n')[0]
         samplings = int(training.split('nb_samplings: ')[1].split('\n')[0])
         name = training.split('name: ')[1].split('\n')[0]
 
-    with open(scriptpath+'/Results_analysis/config/config.yaml','w') as results:
+    with open(dirconfigres+name+'_MaLCons_config_Results.yaml','w') as results:
         results.write('prefix:\n')
         for samp in range(1,samplings+1,1):
             results.write('  - S'+str(samp)+'x\n')
@@ -51,12 +62,12 @@ def create_config(configtraining, classifiers,scriptpath):
 
 def main():
     scriptpath = os.path.dirname(os.path.abspath(__file__))
-    configtraining = scriptpath+'/Process_and_training/config/config.yaml'
+    configfile, dirconfigres = get_arg(scriptpath)
 
     classifiers = scriptpath+'/Process_and_training/softs/classifiers_list/'
     classifiers = absoluteFilePaths(classifiers)
 
-    create_config(configtraining,classifiers,scriptpath)
+    create_config(configfile,dirconfigres,classifiers,scriptpath)
 
 if __name__ == "__main__":
     main()

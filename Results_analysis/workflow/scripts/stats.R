@@ -132,6 +132,25 @@ boxplots.MCC_and_STDMCC <- cowplot::plot_grid(boxplot.MCC, boxplot.STDMCC,
                                              align = 'v', axis = 'lr')
 ggsave("STATS/boxplot_MCC_and_STDMCC_params_sensi_onlyMCCopti_FB_DASH_LINE.png",boxplots.MCC_and_STDMCC, width = 12,height = 8)
 
+### Test if any model has passed the performance filters ; if none, then stop the script execution as no more stats are needed
+
+stop_quietly <- function() {
+  opt <- options(show.error.messages = FALSE)
+  on.exit(options(opt))
+  stop()
+}
+
+print(dim(fullresults.filtered)[1])
+if (dim(fullresults.filtered)[1] == 0){
+  fileConn<-file("finished.txt")
+  writeLines(c("BDML to NEO4J and Statistics analysis is done!","No model, regardless of runs, was sufficiently efficient. (< 0.7 MCC and/or > 0.1 STD MCC)"), fileConn)
+  close(fileConn)
+
+  print("No model, regardless of runs, was sufficiently efficient. (< 0.7 MCC and/or > 0.1 STD MCC)")
+
+  quit()
+}
+
 ## COUNT NBFEAT
 
 #### geom count NB FEAT, on FILTERED MODELS ####

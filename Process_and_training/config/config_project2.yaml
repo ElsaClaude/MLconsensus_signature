@@ -1,0 +1,8 @@
+input_data: /mnt/projects_tn03/EClaude_HEFS-DB/DL_TCGA_data_variance_filtering_and_clustering/TCGA_REPO_OUTPUT_whereDEG_005padj/UCEC/Input_data_for_HEFS
+metadata_file: UCEC_Var_StageIIIvsStageIV_analysis_metadata_sampleID_Label_clusterID.csv
+data_file: UCEC_Var_StageIIIvsStageIV_analysis_data_logCPM.csv
+output_directory: /mnt/projects_tn03/EClaude_HEFS-DB/DL_TCGA_data_variance_filtering_and_clustering/HEFS_MaLCons/Full_Results_for_THeBiom/UCEC/Var/StageIIIvsStageIV
+name: UCEC_Var_StageIIIvsStageIV
+nb_samplings: 10
+cpus: 10
+memory: 150G

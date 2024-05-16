@@ -1,4 +1,3 @@
 Process_and_training/workflow/.snakemake/log/*
-Process_and_training/workflow/scripts/.snakemake/metadata/L2hvbWUvZWNsYXVkZS9Eb2N1bWVudHMvVGhlc2UvVEVTVF9QSVBFTElORV9QQVBJRVIvb3V0cHV0L1N0cmF0aWZpZWRfc2FtcGxpbmcvUGlwZWxpbmVTdGVwRG9uZS50eHQ=
-Process_and_training/workflow/scripts/.snakemake/metadata/L2hvbWUvZWNsYXVkZS9Eb2N1bWVudHMvVGhlc2UvVEVTVF9QSVBFTElORV9QQVBJRVIvb3V0cHV0L1N0cmF0aWZpZWRfc2FtcGxpbmcvZGVtb2ZpbGUyLnR4dA==
-
+Results_analysis/workflow/.snakemake/log/*
+Results_analysis/workflow/scripts/.snakemake/metadata/

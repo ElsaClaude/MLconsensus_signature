@@ -50,7 +50,8 @@ def create_tree_file(samplings,scriptpath,classifiers,outputdir, name,cpus,maxfe
             ### Running time depending on classifier to train (POSSIBLE TO MODIFY)
             if classifname == 'BAYES_NB':
                 job.write('#SBATCH --time=0-05:00:00\n')
-            if classifname in ['BAYES_A1DE','TREES_C45']:
+            # if classifname in ['BAYES_A1DE','TREES_C45']:
+            if classifname in ['BAYES_A1DE','TREES_C45','TREES_RF','FUNCTIONS_SVM']:
                 job.write('#SBATCH --time=2-00:00:00\n')
             if classifname in ['TREES_CART','LAZY_kNN']:
                 job.write('#SBATCH --time=5-00:00:00\n')
@@ -61,8 +62,10 @@ def create_tree_file(samplings,scriptpath,classifiers,outputdir, name,cpus,maxfe
 
             ### training command
             job.write('cd '+outputdir+'/Training_'+name+'/'+samp+'/'+classifname+';')
-            job.write('module load java/1.8.0_192;')
-            job.write('time java -Xmx'+memory+' -XX:+HeapDumpOnOutOfMemoryError -jar '+scriptpath+'/../../softs/BioDiscML/biodiscml.jar -train -config config.conf')
+            # job.write('module load java/1.8.0_192;')
+            # job.write('time java -Xmx'+memory+' -XX:+HeapDumpOnOutOfMemoryError -jar '+scriptpath+'/../../softs/BioDiscML/biodiscml.jar -train -config config.conf')
+            job.write('time /mnt/software/jvm/jdk1.8.0_371/bin/java -Xmx'+memory+' -XX:+HeapDumpOnOutOfMemoryError -jar '+scriptpath+'/../../softs/BioDiscML/biodiscml.jar -train -config config.conf')
+
 
             job.close()
 

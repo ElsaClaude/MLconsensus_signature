@@ -2,15 +2,16 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import csv
 
-def get_delimiter(file_path, bytes = 4096):
-    sniffer = csv.Sniffer()
-    data = open(file_path, "r").read(bytes)
-    delimiter = sniffer.sniff(data).delimiter
-    return delimiter
+# def get_delimiter(file_path, bytes = 4096):
+#     sniffer = csv.Sniffer()
+#     data = open(file_path, "r").read(bytes)
+#     delimiter = sniffer.sniff(data).delimiter
+#     print(delimiter)
+#     return delimiter
 
 def stratified_sampling(metadatapath,datapath,samplings,outputdir, name):
-    metadatadf = pd.read_csv(metadatapath,sep=get_delimiter(metadatapath),header=0)
-    datadf = pd.read_csv(datapath,sep=get_delimiter(datapath),header=0)
+    metadatadf = pd.read_csv(metadatapath,sep=',',header=0)
+    datadf = pd.read_csv(datapath,sep=',',header=0)
 
     fulldata = metadatadf.merge(datadf, on='ID')
 
