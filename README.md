@@ -1,6 +1,9 @@
 # MaLCons
  MaLCons stands for "Machine Learning Consensus" and is a two steps pipeline designed to perform the building of a stable between feature signatures of multiple wrappers Machine Learning (ML) models. The pipeline has been developed based on Snakemake workflow management system.
+
+ MaLCons is part of a hybrid ensemble feature selection approach as published by Claude, E. et al.
  
+ *Claude, E., Leclercq, M., Thébault, P., Droit, A. & Uricaru, R. Optimizing hybrid ensemble feature selection strategies for transcriptomic biomarker discovery in complex diseases. NAR Genomics and Bioinformatics 6, lqae079. issn: 2631-9268 (Sept. 1, 2024).*
  
 
 ## Pipeline global behavior
